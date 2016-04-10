@@ -5,7 +5,8 @@ input {
 #        interval => 3600
 #    }
     file {
-        path => "/Users/robertmetthe/projects/crime.csv"
+        #path => "/Users/robertmetthe/projects/crime.csv"
+        path => "/Users/nreese/projects/denver_data/crime.csv"
         start_position => "beginning"
         sincedb_path => "/dev/null"
         ignore_older => 0
@@ -53,12 +54,20 @@ filter {
       }
       remove_field => ["GEO_LAT", "GEO_LON", "GEO_X", "GEO_Y", "path", "host", "message"]
     }
+
+    ruby {
+       code => "
+         event['FIRST_OCCURRENCE_DATE'][10] = 'T'
+         event['FIRST_OCCURRENCE_DATE'] = event['FIRST_OCCURRENCE_DATE'] + '.000'
+       "
+    }
+    #2015-01-27 00:04:59
 }
 
 output {
-#    stdout {
-#        codec => rubydebug
-#    }
+    stdout {
+        codec => rubydebug
+    }
     elasticsearch {
         #http://localhost:9200/_cat/indices
         #http://localhost:9200/denver_crime/_mapping?pretty=true

@@ -14,7 +14,8 @@
           "index": "not_analyzed"
         },
         "FIRST_OCCURRENCE_DATE" : {
-          "type" : "string"
+          "type" : "date",
+          "format" : "date_hour_minute_second_millis"
         },
         "INCIDENT_ADDRESS" : {
           "type" : "string"
