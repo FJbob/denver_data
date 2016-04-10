@@ -1,0 +1,78 @@
+{
+  "mappings": {
+    "report": {
+      "properties" : {
+        "@timestamp" : {
+          "type" : "date",
+          "format" : "strict_date_optional_time||epoch_millis"
+        },
+        "@version" : {
+          "type" : "string"
+        },
+        "DISTRICT_ID" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "FIRST_OCCURRENCE_DATE" : {
+          "type" : "string"
+        },
+        "INCIDENT_ADDRESS" : {
+          "type" : "string"
+        },
+        "INCIDENT_ID" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "IS_CRIME" : {
+          "type" : "boolean"
+        },
+        "IS_TRAFFIC" : {
+          "type" : "boolean"
+        },
+        "LAST_OCCURRENCE_DATE" : {
+          "type" : "string"
+        },
+        "NEIGHBORHOOD_ID" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "OFFENSE_CATEGORY_ID" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "OFFENSE_CODE" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "OFFENSE_CODE_EXTENSION" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "OFFENSE_ID" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "OFFENSE_TYPE_ID" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "PRECINCT_ID" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "REPORTED_DATE" : {
+          "type" : "string"
+        },
+        "host" : {
+          "type" : "string"
+        },
+        "location" : {
+          "type" : "geo_point"
+        },
+        "type" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}
