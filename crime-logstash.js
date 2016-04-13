@@ -56,18 +56,26 @@ filter {
     }
 
     ruby {
-       code => "
-         event['FIRST_OCCURRENCE_DATE'][10] = 'T'
-         event['FIRST_OCCURRENCE_DATE'] = event['FIRST_OCCURRENCE_DATE'] + '.000'
+      code => "
+        if (event['FIRST_OCCURRENCE_DATE'] != nil) 
+          event['FIRST_OCCURRENCE_DATE'][10] = 'T'
+          event['FIRST_OCCURRENCE_DATE'] = event['FIRST_OCCURRENCE_DATE'] + '.000'
+
+          hours = Integer(event['FIRST_OCCURRENCE_DATE'][11..12], 10)
+          mins = Integer(event['FIRST_OCCURRENCE_DATE'][14..15], 10)
+          secs = Integer(event['FIRST_OCCURRENCE_DATE'][17..18], 10)
+          
+          event['secsOfDay'] = (hours * 3600) + (mins * 60) + secs
+        end
        "
     }
     #2015-01-27 00:04:59
 }
 
 output {
-    stdout {
-        codec => rubydebug
-    }
+    #stdout {
+    #    codec => rubydebug
+    #}
     elasticsearch {
         #http://localhost:9200/_cat/indices
         #http://localhost:9200/denver_crime/_mapping?pretty=true
