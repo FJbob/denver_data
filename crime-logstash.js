@@ -57,6 +57,11 @@ filter {
 
     ruby {
       code => "
+        if (event['IS_CRIME'])
+          event['report_type'] = 'crime'
+        else
+          event['report_type'] = 'traffic'
+        end
         if (event['FIRST_OCCURRENCE_DATE'] != nil) 
           event['FIRST_OCCURRENCE_DATE'][10] = 'T'
           event['FIRST_OCCURRENCE_DATE'] = event['FIRST_OCCURRENCE_DATE'] + '.000'
@@ -69,7 +74,6 @@ filter {
         end
        "
     }
-    #2015-01-27 00:04:59
 }
 
 output {
