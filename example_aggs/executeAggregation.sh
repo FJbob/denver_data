@@ -5,6 +5,7 @@ fi
 
 if [ ! -f $1 ]; then
     echo "$1 not found!"
+    exit 0
 fi
 
 echo "POSTing contents of $1"
