@@ -1,0 +1,23 @@
+{
+  "size": 0,
+  "aggs": {
+    "topNeighborhoods": {
+      "terms": {
+        "field": "NEIGHBORHOOD_ID",
+        "size": 5,
+        "order": {
+          "_count": "desc"
+        }
+      },
+      "aggs": {
+        "yearlyTrend": {
+          "date_histogram": {
+            "field": "FIRST_OCCURRENCE_DATE",
+            "interval": "1y",
+            "time_zone": "America/Denver"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "size": 0,
+  "aggs": {
+    "mygrid": {
+      "geohash_grid": {
+        "field": "location",
+        "precision": 2
+      },
+      "aggs": {
+        "myhisto": {
+          "date_histogram": {
+            "field": "FIRST_OCCURRENCE_DATE",
+            "interval": "1M",
+            "time_zone": "America/Denver"
+          },
+          "aggs": {
+            "the_count": {
+              "value_count": {
+                "field": "FIRST_OCCURRENCE_DATE"
+              }
+            },
+            "seasonal_avg": {
+              "moving_avg": {
+                "buckets_path": "the_count",
+                "window": 36,
+                "model": "holt_winters",
+                "settings": {
+                  "type": "mult",
+                  "period": 12,
+                  "gamma" : 0.6
+                }
+              }  
+            },
+            "normalized": {
+              "bucket_script": {
+                "buckets_path": {
+                  "seasonal_avg": "seasonal_avg.value",
+                  "current": "the_count.value"
+                },
+                "script": "current - seasonal_avg"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

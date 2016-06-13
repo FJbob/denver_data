@@ -1,0 +1,20 @@
+{
+  "query": {
+    "match": {
+      "OFFENSE_TYPE_ID": {
+        "query": "traffic-accident-dui-duid",
+        "type": "phrase"
+      }
+    }
+  },
+  "size": 0,
+  "aggs": {
+    "mostDUIs": {
+      "histogram": {
+        "script": "doc['secsOfDay'].value / 3600",
+        "lang": "expression",
+        "interval": 1
+      }
+    }
+  }
+}
