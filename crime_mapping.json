@@ -6,24 +6,18 @@
           "type" : "date",
           "format" : "strict_date_optional_time||epoch_millis"
         },
-        "@version" : {
-          "type" : "string"
-        },
         "DISTRICT_ID" : {
-          "type" : "string",
-          "index": "not_analyzed"
+          "type" : "keyword"
         },
         "FIRST_OCCURRENCE_DATE" : {
           "type" : "date",
           "format" : "date_hour_minute_second_millis"
         },
         "INCIDENT_ADDRESS" : {
-          "type" : "string",
-          "index": "not_analyzed"
+          "type" : "keyword"
         },
         "INCIDENT_ID" : {
-          "type" : "string",
-          "index": "not_analyzed"
+          "type" : "keyword"
         },
         "IS_CRIME" : {
           "type" : "boolean"
@@ -31,49 +25,39 @@
         "IS_TRAFFIC" : {
           "type" : "boolean"
         },
-        "LAST_OCCURRENCE_DATE" : {
-          "type" : "string"
-        },
         "NEIGHBORHOOD_ID" : {
-          "type" : "string",
-          "index": "not_analyzed"
+          "type" : "keyword"
         },
         "OFFENSE_CATEGORY_ID" : {
-          "type" : "string",
-          "index": "not_analyzed"
+          "type" : "keyword"
         },
         "OFFENSE_CODE" : {
-          "type" : "string",
-          "index": "not_analyzed"
+          "type" : "keyword"
         },
         "OFFENSE_CODE_EXTENSION" : {
-          "type" : "string",
-          "index": "not_analyzed"
+          "type" : "keyword"
         },
         "OFFENSE_ID" : {
-          "type" : "string",
-          "index": "not_analyzed"
+          "type" : "keyword"
         },
         "OFFENSE_TYPE_ID" : {
-          "type" : "string",
-          "index": "not_analyzed"
+          "type" : "keyword"
         },
         "PRECINCT_ID" : {
-          "type" : "string",
-          "index": "not_analyzed"
+          "type" : "keyword"
         },
         "REPORTED_DATE" : {
-          "type" : "string"
+          "type" : "date",
+          "format" : "date_hour_minute_second_millis"
         },
         "report_type" : {
-          "type" : "string",
-          "index": "not_analyzed"
+          "type" : "keyword"
         },
         "location" : {
           "type" : "geo_point"
         },
         "type" : {
-          "type" : "string"
+          "type" : "keyword"
         }
       }
     }

@@ -52,25 +52,34 @@ filter {
         "[location][lat]" => "%{GEO_LAT}"
         "[location][lon]" => "%{GEO_LON}"
       }
-      remove_field => ["GEO_LAT", "GEO_LON", "GEO_X", "GEO_Y", "path", "host", "message"]
+      remove_field => ["GEO_LAT", "GEO_LON", "GEO_X", "GEO_Y", "LAST_OCCURRENCE_DATE", 
+        "path", "host", "message", "@timestamp", "@version"]
     }
 
     ruby {
       code => "
-        if (event['IS_CRIME'])
-          event['report_type'] = 'crime'
+        if (event.get('IS_CRIME'))
+          event.set('report_type', 'crime')
         else
-          event['report_type'] = 'traffic'
+          event.set('report_type', 'traffic')
         end
-        if (event['FIRST_OCCURRENCE_DATE'] != nil) 
-          event['FIRST_OCCURRENCE_DATE'][10] = 'T'
-          event['FIRST_OCCURRENCE_DATE'] = event['FIRST_OCCURRENCE_DATE'] + '.000'
+        if (event.get('FIRST_OCCURRENCE_DATE') != nil)
+          iso8601 = event.get('FIRST_OCCURRENCE_DATE')
+          iso8601[10] = 'T'
+          iso8601 = iso8601 + '.000'
+          event.set('FIRST_OCCURRENCE_DATE', iso8601)
 
-          hours = Integer(event['FIRST_OCCURRENCE_DATE'][11..12], 10)
-          mins = Integer(event['FIRST_OCCURRENCE_DATE'][14..15], 10)
-          secs = Integer(event['FIRST_OCCURRENCE_DATE'][17..18], 10)
-          
-          event['secsOfDay'] = (hours * 3600) + (mins * 60) + secs
+          hours = Integer(iso8601[11..12], 10)
+          mins = Integer(iso8601[14..15], 10)
+          secs = Integer(iso8601[17..18], 10)
+          event.set('secsOfDay', (hours * 3600) + (mins * 60) + secs)
+        end
+
+        if (event.get('REPORTED_DATE') != nil)
+          iso8601 = event.get('REPORTED_DATE')
+          iso8601[10] = 'T'
+          iso8601 = iso8601 + '.000'
+          event.set('REPORTED_DATE', iso8601)
         end
        "
     }
