@@ -1,0 +1,75 @@
+{
+  "query": {
+    "range": {
+      "FIRST_OCCURRENCE_DATE": {
+        "gte": "2014-08-01T00:00:00.000", 
+        "lte": "2014-08-30T23:59:59.999", 
+        "time_zone": "America/Denver"
+      }
+    }
+  },
+  "size": 0,
+  "aggs": {
+    "mygrid": {
+      "geohash_grid": {
+        "field": "location",
+        "precision": 1
+      },
+      "aggs": {
+        "myhisto": {
+          "date_histogram": {
+            "field": "FIRST_OCCURRENCE_DATE",
+            "interval": "day",
+            "time_zone": "America/Denver"
+          },
+          "aggs": {
+            "the_count": {
+              "value_count": {
+                "field": "FIRST_OCCURRENCE_DATE"
+              }
+            },
+            "seasonal_avg": {
+              "moving_avg": {
+                "buckets_path": "the_count",
+                "window": 36,
+                "model": "simple"
+              }
+            },
+            "deviationFromMovavg": {
+              "bucket_script": {
+                "buckets_path": {
+                  "count": "the_count",
+                  "movavg": "seasonal_avg"
+                },
+                "script": "(count - movavg).abs()"
+              }
+            }
+          }
+        },
+        "count_stats": {
+          "extended_stats_bucket": {
+            "buckets_path": "myhisto>the_count"
+          }
+        },
+        "moving_avg_stats": {
+          "extended_stats_bucket": {
+            "buckets_path": "myhisto>seasonal_avg"
+          }
+        },
+        "deviationFromMovavg_stats": {
+          "extended_stats_bucket": {
+            "buckets_path": "myhisto>deviationFromMovavg"
+          }
+        },
+        "ninetieth_surprise": {
+          "percentiles_bucket": {
+            "buckets_path": "myhisto>deviationFromMovavg",
+            "percents": [
+              95.0
+            ]
+          }
+        }
+      }
+    }
+  }
+}
