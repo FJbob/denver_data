@@ -1,0 +1,39 @@
+{
+  "query": {
+    "range": {
+      "FIRST_OCCURRENCE_DATE": {
+        "gte": "2014-08-01T00:00:00.000", 
+        "lte": "2014-08-30T23:59:59.999", 
+        "time_zone": "America/Denver"
+      }
+    }
+  },
+  "size": 0,
+  "aggs": {
+    "baseline_histo":{
+      "date_histogram": {
+        "field": "FIRST_OCCURRENCE_DATE",
+        "interval": "day",
+        "time_zone": "America/Denver"
+      },
+      "aggs": {
+        "histo_bin_count": {
+          "value_count": {
+            "field": "FIRST_OCCURRENCE_DATE"
+          }
+        },
+        "seasonal_avg": {
+          "moving_avg": {
+            "buckets_path": "histo_bin_count",
+            "window": 30,
+            "model": "holt_winters",
+            "settings": {
+              "type": "mult",
+              "period": 7
+            }
+          }  
+        }
+      }
+    }
+  }
+}

@@ -9,4 +9,4 @@ if [ ! -f $1 ]; then
 fi
 
 echo "POSTing contents of $1"
-curl -v -XPOST 'http://localhost:9200/denver_crime/report/_search?pretty=true' -d @$1 --header "Content-Type: application/json"
+curl -i -v -XGET 'http://localhost:9200/denver_crime/report/_search?pretty=true' -d @$1 --header "Content-Type: application/json"
